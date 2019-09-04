@@ -12,9 +12,10 @@
             Name = name;
             PhoneNumber = phoneNumber;
         }
+        private Organization() { }
         public override string ToString()
         {
-            return "Name: " + Name +"\n"+
+            return "Name: " + Name + "\n" +
                 "PhoneNumber: " + PhoneNumber;
         }
     }

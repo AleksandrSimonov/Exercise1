@@ -1,19 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Exercise1.CustomSerializer;
-using System.Xml.Serialization;
 using System.Reflection;
+using System.Text;
 namespace Exercise1.CustomSerializer
 {
-   class SerializerToCsv : ICustomSerializable
+    internal class SerializerToCsv : ICustomSerializable
     {
-        public  void Serialize(StreamWriter output, object obj)
+        public string Extend
         {
-            if ((output == null)||(obj==null))
+            get
+            {
+                return "csv";
+            }
+        }
+        public void Serialize(StreamWriter output, object obj)
+        {
+            if ((output == null) || (obj == null))
                 throw new ArgumentNullException();
 
             Type type = obj.GetType();
@@ -27,7 +29,7 @@ namespace Exercise1.CustomSerializer
                 if (prp.CanRead)
                 {
                     csvName.Append(prp.Name).Append(';');
-                    csvValue.Append(prp.GetValue(obj,null)).Append(';');
+                    csvValue.Append(prp.GetValue(obj, null)).Append(';');
                 }
             }
             csvName.Length--; // Remove last ";"

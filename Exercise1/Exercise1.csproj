@@ -48,14 +48,17 @@
     <Compile Include="Attributes\MinBirthdayAttribute.cs" />
     <Compile Include="Attributes\TypeDescriptionAttribute.cs" />
     <Compile Include="Contact.cs" />
+    <Compile Include="ContactFileServer.cs" />
     <Compile Include="CustomSerializer\OutputFormat.cs" />
     <Compile Include="CustomSerializer\ICustomSerializable.cs" />
+    <Compile Include="CustomSerializer\Serializer.cs" />
     <Compile Include="CustomSerializer\SerializerToCsv.cs" />
     <Compile Include="CustomSerializer\SerializerToXml.cs" />
     <Compile Include="Organization.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SexEnum.cs" />
+    <Compile Include="Validate.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

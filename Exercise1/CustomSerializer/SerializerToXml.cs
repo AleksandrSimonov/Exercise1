@@ -1,17 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
-using System.Reflection;
 using System.IO;
-using Exercise1.CustomSerializer;
+using System.Xml.Serialization;
 
 namespace Exercise1.CustomSerializer
 {
-    class SerializerToXml: ICustomSerializable
+    internal class SerializerToXml : ICustomSerializable
     {
+        public string Extend
+        {
+            get
+            {
+                return "xml";
+            }
+        }
         public void Serialize(StreamWriter output, object obj)
         {
             if ((output == null) || (obj == null))

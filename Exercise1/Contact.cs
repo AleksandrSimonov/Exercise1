@@ -2,10 +2,8 @@
 using System;
 using System.IO;
 using System.Runtime.Serialization;
-using Exercise1.CustomSerializer;
 namespace Exercise1
 {
-    [Serializable]
     [TypeDescription("Person")]
     public sealed class Contact : ICloneable
     {
@@ -35,9 +33,16 @@ namespace Exercise1
 
         public Organization Job { get; set; }
 
+        private Contact() { }
         public Contact(string name, string surname, string lastname, SexEnum sex,
             string phoneNumber, DateTime birthday, double taxId, string post, Organization job)
         {
+            if ((name == null) ||
+              (surname == null) ||
+              (lastname == null) ||
+              (taxId == 0))
+                throw new NullReferenceException();
+
             Name = name;
             Surname = surname;
             LastName = lastname;
@@ -49,9 +54,14 @@ namespace Exercise1
             Job = job;
         }
 
-        public Contact(string name, string surname, string lastname, SexEnum sex,
+        public Contact(string name, string surname, string lastname, SexEnum sex, double taxId,
             DateTime birthday)
         {
+            if ((name == null) ||
+                (surname == null) ||
+                (lastname == null)||
+                (taxId==0))
+                throw new NullReferenceException();
             Name = name;
             Surname = surname;
             LastName = lastname;
@@ -68,7 +78,7 @@ namespace Exercise1
         {
             if (obj == null)
                 return false;
-            if (obj is Contact == false)
+            if (obj.GetType()!=typeof(Contact))
                 return false;
             return this.TaxId.Equals(((Contact) obj).TaxId);
         }
@@ -80,32 +90,9 @@ namespace Exercise1
 
         public object Clone()
         {
-            return ((Contact)this.MemberwiseClone()).
-                Job =new Organization(this.Job.Name, 
+            return ((Contact) this.MemberwiseClone()).
+                Job = new Organization(this.Job.Name,
                 this.Job.PhoneNumber);
-            
-        }
-
-        private void Save(IFormatter formatter)
-        {
-            if (formatter == null)
-                throw new NullReferenceException();
-            using (FileStream fs = new FileStream("contact.dat", FileMode.OpenOrCreate))
-            {
-                Console.WriteLine("Сериализация начата");
-                formatter.Serialize(fs, this);
-                Console.WriteLine("Сериализация закончена");
-            }
-        }
-
-        public void SerializeToXml(Stream output, object obj)
-        {
-            
-        }
-
-        public void SerializeToCsv(Stream output, object obj)
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -7,11 +7,11 @@ using System.IO;
 using Exercise1.CustomSerializer;
 namespace Exercise1
 {
-    class ContactFileServer : IDisposable
+    class ContactFileSaver : IDisposable
     {
         StreamWriter streamWriter;
         bool isDispose = true;
-        public ContactFileServer()
+        public ContactFileSaver()
         {
             streamWriter = new StreamWriter("file.csv", false, Encoding.UTF8);
             isDispose = false;

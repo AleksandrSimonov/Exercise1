@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Exercise1.Attributes
+namespace Contact.Attributes
 {
     [AttributeUsage(AttributeTargets.Property)]
     public class MinBirthdayAttribute : Attribute

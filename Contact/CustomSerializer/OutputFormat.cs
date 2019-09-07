@@ -1,4 +1,4 @@
-﻿namespace Exercise1.CustomSerializer
+﻿namespace Contact.CustomSerializer
 {
     public enum OutputFormat
     {

@@ -2,7 +2,7 @@
 using System.IO;
 using System.Reflection;
 using System.Text;
-namespace Exercise1.CustomSerializer
+namespace Contact.CustomSerializer
 {
     public class SerializerToCsv : ICustomSerializable
     {

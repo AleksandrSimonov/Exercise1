@@ -2,7 +2,7 @@
 using System.IO;
 using System.Xml.Serialization;
 
-namespace Exercise1.CustomSerializer
+namespace Contact.CustomSerializer
 {
     public class SerializerToXml : ICustomSerializable
     {

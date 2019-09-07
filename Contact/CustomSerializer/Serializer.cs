@@ -1,13 +1,14 @@
 ﻿using System;
 using System.IO;
-namespace Exercise1.CustomSerializer
+namespace Contact.CustomSerializer
 {
     public class Serializer
     {
         private Contact _contact;
+        private string _path = "file";
         public Serializer(Contact contact)
         {
-            this._contact = contact;
+            _contact = contact;
         }
         public void Serialize(OutputFormat outputFormat)
         {
@@ -19,10 +20,15 @@ namespace Exercise1.CustomSerializer
             else
                 throw new ArgumentOutOfRangeException();
 
-            using (StreamWriter writer = new StreamWriter("file." + serializer.Extension, false))
+            using (StreamWriter writer = new StreamWriter(_path+"." + serializer.Extension, false))
             {
                 serializer.Serialize(writer, _contact);
             }
+        }
+        public void Serialize(string path, OutputFormat outputFormat)
+        {
+            _path = path;
+            Serialize(outputFormat);
         }
     }
 }

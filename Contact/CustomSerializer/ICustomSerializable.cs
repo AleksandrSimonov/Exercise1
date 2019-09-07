@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-namespace Exercise1
+namespace Contact
 {
     public interface ICustomSerializable
     {

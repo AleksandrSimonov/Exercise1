@@ -4,11 +4,11 @@ using System.Text.RegularExpressions;
 
 namespace Exercise1
 {
-    internal class Validate
+    internal class ContactValidater
     {
         private Contact contact;
         private Type type = typeof(Contact);
-        public Validate(Contact contact)
+        public ContactValidater(Contact contact)
         {
             this.contact = contact;
         }
@@ -82,7 +82,7 @@ namespace Exercise1
 
         }
 
-        public void DoValidate()
+        public void Validate()
         {
             var validationResult = ValidateName();
             if (validationResult == null)

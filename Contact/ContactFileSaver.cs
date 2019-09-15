@@ -31,7 +31,7 @@ namespace Contact
         public void Save(Contact person)
         {
             var serealizer = new SerializerToCsv();
-            serealizer.Serialize(StreamWriter, person);
+            serealizer.Serialize(StreamWriter, person, null);
             Dispose();
         }
         public void Save(Contact person, string path)
@@ -42,7 +42,11 @@ namespace Contact
         public void Dispose()
         {
             if (!_isDispose)
+            {
                 StreamWriter.Dispose();
+                _isDispose = true;
+            }
+
         }
     }
 }

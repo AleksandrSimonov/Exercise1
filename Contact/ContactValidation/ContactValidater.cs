@@ -9,9 +9,8 @@ namespace Contact.ContactValidation
         private Contact _contact;
         private Type _type = typeof(Contact);
         public ContactValidatorResult Result { get; }
-        public ContactValidater(Contact contact)
+        public ContactValidater()
         {
-            _contact = contact;
             Result = new ContactValidatorResult();
         }
 
@@ -79,8 +78,9 @@ namespace Contact.ContactValidation
 
         }
 
-        public ContactValidatorResult Validate()
+        public ContactValidatorResult Validate(Contact contact)
         {
+            _contact = contact;
             ValidateName();
             ValidateSurname();
             ValidateLastname();

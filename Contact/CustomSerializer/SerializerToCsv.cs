@@ -13,7 +13,7 @@ namespace Contact.CustomSerializer
                 return "csv";
             }
         }
-        public void Serialize(StreamWriter output, object obj)
+        public void Serialize(StreamWriter output, object obj, string dateFormat)
         {
             if ((output == null) || (obj == null))
                 throw new ArgumentNullException();
@@ -24,12 +24,22 @@ namespace Contact.CustomSerializer
             var csvValue = new StringBuilder();
 
             // First line contains field names
+            object prpValue = "";
             foreach (PropertyInfo prp in properties)
             {
                 if (prp.CanRead)
                 {
+
                     csvName.Append(prp.Name).Append(';');
-                    csvValue.Append(prp.GetValue(obj, null)).Append(';');
+                    prpValue = prp.GetValue(obj, null);
+
+                    if (prpValue.GetType() == typeof(DateTime))
+                    {
+                        var dateTime = Convert.ToDateTime(prpValue);
+                        csvValue.Append(dateTime.ToString(dateFormat)).Append(';');
+                    }
+                    else
+                        csvValue.Append(prp.GetValue(obj, null)).Append(';');
                 }
             }
             csvName.Length--; // Remove last ";"

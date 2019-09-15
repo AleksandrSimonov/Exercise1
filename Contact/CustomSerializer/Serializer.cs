@@ -1,34 +1,79 @@
 ﻿using System;
+using System.Configuration;
 using System.IO;
+using System.Text.RegularExpressions;
+
 namespace Contact.CustomSerializer
 {
     public class Serializer
     {
-        private Contact _contact;
-        private string _path = "file";
-        public Serializer(Contact contact)
+        private OutputFormat _OutputFormat;
+        private string _FileName = "contact";
+        private ICustomSerializable _Serializer;
+        private bool _Overwrite;
+        public Serializer(OutputFormat outputFormat)
         {
-            _contact = contact;
+            _OutputFormat = outputFormat;
         }
-        public void Serialize(OutputFormat outputFormat)
+        public void Serialize(Contact contact, bool overwrite, string dateFormat)
         {
-            ICustomSerializable serializer;
-            if (outputFormat == OutputFormat.Xml)
-                serializer = new SerializerToXml();
-            else if (outputFormat == OutputFormat.Csv)
-                serializer = new SerializerToCsv();
+            _Overwrite = overwrite; 
+            if (_OutputFormat == OutputFormat.Xml)
+                _Serializer = new SerializerToXml();
+            else if (_OutputFormat == OutputFormat.Csv)
+                _Serializer = new SerializerToCsv();
             else
                 throw new ArgumentOutOfRangeException();
 
-            using (StreamWriter writer = new StreamWriter(_path+"." + serializer.Extension, false))
+            string fileName = GetNewFileName();
+            using (var writer = new StreamWriter(fileName, false))
             {
-                serializer.Serialize(writer, _contact);
+                _Serializer.Serialize(writer, contact,dateFormat);
             }
         }
-        public void Serialize(string path, OutputFormat outputFormat)
+        public string GetOnlyName(FileInfo file)
         {
-            _path = path;
-            Serialize(outputFormat);
+            var notNameReg = new Regex(@"(?<notName>\s?(\(\d+\))?\s?\..+)$");
+            string notName = notNameReg.Match(file.Name).Groups["notName"].Value;
+            string onlyName = file.Name.Remove(file.Name.Length - notName.Length);
+            return onlyName;
+        }
+        private string GetNewFileName()
+        {
+
+            var file = new FileInfo(_FileName + "." + _Serializer.Extension);
+            if (_Overwrite)
+                return file.Name;
+            if (File.Exists(Directory.GetCurrentDirectory() + @"\" + file.Name))
+            {
+                string onlyName = GetOnlyName(file);
+                var indexNumberReg = new Regex(@"\((?<indexNumber>\d+)\)\s?\..+$");
+
+
+                var files = Directory.GetFiles(Directory.GetCurrentDirectory());
+                int indexNumber = 0, maxIndexNumber = 0;
+
+                foreach (var fp in files)
+                {
+                    var f = new FileInfo(fp);
+                    if (indexNumberReg.IsMatch(f.Name))
+                    {
+                        indexNumber = int.Parse(indexNumberReg.Match(f.Name).Groups["indexNumber"].Value);
+                        if (indexNumber > maxIndexNumber)
+                        {
+                            maxIndexNumber = indexNumber;
+                        }
+                    }
+                }
+
+                return onlyName + $" ({indexNumber + 1}) {file.Extension}";
+            }
+            return file.Name;
+        }
+        public void Serialize(string fileName, Contact contact, bool overwrite, string dateFormat)
+        {
+            _FileName = fileName;
+            Serialize(contact, overwrite, dateFormat);
         }
     }
 }

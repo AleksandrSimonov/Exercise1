@@ -14,14 +14,23 @@ namespace Contact.ContactValidation
             }
         }
         public List<string> ErrorsMessage { get; }
+        public ContactValidatorResult()
+        {
+            ErrorsMessage = new List<string>();
+        }
         public override string ToString()
         {
             if (IsCorrect)
                 return "Валидация прошла успешно.";
             else
             {
-                return "При валидации возникла(и) ошибка(и):\n" +
-                    ErrorsMessage.Select(es => es.ToString() + "\n");
+                string errors = "";
+                foreach(var error in ErrorsMessage)
+                {
+                    errors += error + "\n";
+                }
+                return "При валидации возникла(и) ошибка(и):\n"+errors;
+                    //+ErrorsMessage.Select(es => es.ToString() + "\n");
             }
         }
     }

@@ -13,7 +13,7 @@ namespace Contact.CustomSerializer
                 return "xml";
             }
         }
-        public void Serialize(StreamWriter output, object obj)
+        public void Serialize(StreamWriter output, object obj, string dateFormat)
         {
             if ((output == null) || (obj == null))
                 throw new ArgumentNullException();

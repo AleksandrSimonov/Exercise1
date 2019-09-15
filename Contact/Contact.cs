@@ -3,30 +3,35 @@ using System;
 
 namespace Contact
 {
+    [Serializable]
     [TypeDescription("Person")]
     public sealed class Contact : ICloneable
     {
 
         [MaxLength(15)]
-        public string Name { get; set; }
+        public string Name { get;}
 
 
         [MaxLength(15)]
-        public string Surname { get; set; }
+        public string Surname { get; }
 
 
         [MaxLength(15)]
-        public string LastName { get; set; }
+        public string LastName { get;}
 
         public SexEnum Sex { get; }
 
-        [RegularExpression(@"^\s *\+?\s * ([0 - 9][\s -] *){9,}$")]
+        [RegularExpression(@"^\+\d \(\d{3}\) \d{3}-\d{2}-\d{2}$")]
         public string PhoneNumber { get; set; }
 
+        private DateTime _Birthday;
         [MinBirthday(1980, 1, 1)]
-        public DateTime Birthday { get; }
+        public DateTime Birthday
+        {
+            get;
+        }
 
-        public double TaxId { get; set; }
+        public string TaxId { get; set; }
 
         public string Post { get; set; }
 
@@ -34,12 +39,12 @@ namespace Contact
 
         private Contact() { }
         public Contact(string name, string surname, string lastname, SexEnum sex,
-            string phoneNumber, DateTime birthday, double taxId, string post, Organization job)
+            string phoneNumber, DateTime birthday, string taxId, string post, Organization job)
         {
             if ((name == null) ||
               (surname == null) ||
               (lastname == null) ||
-              (taxId == 0))
+              (taxId == ""))
                 throw new NullReferenceException();
 
             Name = name;
@@ -93,5 +98,20 @@ namespace Contact
                 Job = new Organization(this?.Job?.Name,
                 this?.Job?.PhoneNumber);
         }
+
+        //public XmlSchema GetSchema()
+        //{
+        //    return (null);
+        //}
+
+        //public void ReadXml(XmlReader reader)
+        //{
+
+        //}
+
+        //public void WriteXml(XmlWriter writer)
+        //{
+        //    writer.
+        //}
     }
 }
